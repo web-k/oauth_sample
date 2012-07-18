@@ -1,0 +1,5 @@
+<% if session['access_token'].present? %>
+<a href="/logout">ログアウト</a>
+<% else %>
+<a href="/oauth">OAuthで認証</a>
+<% end %>
