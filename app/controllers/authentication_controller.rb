@@ -4,9 +4,7 @@ class AuthenticationController < ApplicationController
     consumer_secret = ENV['CONSUMER_SECRET'] 
     consumer = OAuth::Consumer.new(
       consumer_key, consumer_secret,
-      {:site => "http://api.twitter.com",
-       :proxy=> ENV["HTTP_PROXY"] 
-      }
+      {:site => "http://api.twitter.com"}
     )
   end
  
