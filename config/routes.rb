@@ -1,6 +1,8 @@
 OauthSample::Application.routes.draw do
 
   root :to => 'authentication#index'
+  get "posts/:id" => "posts#show"
+  post "posts" => "posts#create"
   match ':action' => "authentication"
 
   # The priority is based upon order of creation:

@@ -1,5 +1,8 @@
 <% if session['access_token'].present? %>
 <a href="/logout">ログアウト</a>
+<%= form_tag({:controller=>'posts', :action=>'create'}) do %>
+  <%= submit_tag "Post" %>
+<% end %>
 <% else %>
 <a href="/oauth">OAuthで認証</a>
 <% end %>
