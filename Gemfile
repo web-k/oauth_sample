@@ -5,7 +5,9 @@ gem 'rails', '3.2.6'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
-gem 'sqlite3'
+group :development do
+  gem 'sqlite3', :require => 'sqlite3'
+end
 
 gem 'oauth'
 gem 'twitter'
@@ -45,3 +47,10 @@ gem 'jquery-rails'
 
 gem 'execjs'
 gem 'therubyracer'
+
+gem 'heroku'
+
+group :production do
+  gem 'pg'
+  gem 'therubyracer-heroku', '0.8.1.pre3'
+end
