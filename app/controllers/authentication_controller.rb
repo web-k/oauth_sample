@@ -2,11 +2,11 @@ class AuthenticationController < ApplicationController
   def self.consumer
     consumer_key = ENV['CONSUMER_KEY']
     consumer_secret = ENV['CONSUMER_SECRET'] 
+    consumer_option = {:site => "http://twitter.com"}
+    consumer_option[:proxy] = ENV['http_proxy'] if ENV['http_proxy'].present?
     consumer = OAuth::Consumer.new(
       consumer_key, consumer_secret,
-      {:site => "http://api.twitter.com",
-       :proxy=> ENV["HTTP_PROXY"] 
-      }
+      consumer_option
     )
   end
  
