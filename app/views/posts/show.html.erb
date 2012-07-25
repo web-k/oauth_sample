@@ -1,7 +1,33 @@
 <% if flash[:notice].present? %>
 <p class="notice"><%= flash[:notice] %></p>
 <% end %>
-<div class="media"><script type="text/javascript" src="/views/inject.js"><![CDATA[
+<div class="alternative3d">
+  <div class="media"><script type="text/javascript" src="/views/inject.js"><![CDATA[
 ]]></script></div>
-<div class="copy"><p>Equirectangular panorama with ActionScript(Alternativa3D).</p>
-<p><a href="https://github.com/suzumura-ss/flash_sphere_panorama">https://github.com/suzumura-ss/flash_sphere_panorama</a></p></div>
+  <div class="copy"><p>Equirectangular panorama with ActionScript(Alternativa3D).</p>
+  <p><a href="https://github.com/suzumura-ss/flash_sphere_panorama">https://github.com/suzumura-ss/flash_sphere_panorama</a></p></div>
+</div>
+<div class="css3_3d_transform">
+  <div class="header">
+    <link rel="stylesheet" href="/views/cubic.css" type="text/css" />
+    <script src="/views/js/jquery.min.js" type="text/javascript"></script>
+    <script src="/views/js/jquery.mousewheel.min.js" type="text/javascript"></script>
+    <script src="/views/js/cubic.js" type="text/javascript"></script>
+    <style id="camera"></style>
+  </div>
+  <div class="body" onload="init()">
+    <div id="controller">&nbsp;</div>
+    <div id="container" class="container"></div>
+    <div id="loading" class="infowindow">loading...<br />please wait</div>
+    <div id="texture">
+      <img src="/views/forest1.jpg" />
+      <img src="/views/forest2.jpg" />
+      <img src="/views/forest3.jpg" />
+      <img src="/views/forest4.jpg" />
+      <img src="/views/forest5.jpg" />
+      <img src="/views/forest6.jpg" />
+    </div>
+  </div>
+  <div class="copy"><p>Cubic panorama with CSS3/3D-Transform, 6-textures.</p>
+    <p><a href="https://github.com/suzumura-ss/css3d_cubic_panorama">https://github.com/suzumura-ss/css3d_cubic_panorama</a></p></div>
+</div>
