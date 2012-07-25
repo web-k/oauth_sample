@@ -14,7 +14,7 @@ function init()
 {
   build_cube();
 
-  var e = $(document);
+  var e = $(".css3_3d_transform");
   e.mousewheel(moveWheel);
   e.mousedown(startDrag);
   e.mousemove(moveDrag);
