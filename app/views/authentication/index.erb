@@ -1,8 +1,10 @@
 <% if session['access_token'].present? %>
-<a href="/logout">ログアウト</a>
+<p><a href="/logout">ログアウト</a></p>
 <%= form_tag({:controller=>'posts', :action=>'create'}) do %>
-  <%= submit_tag "Post" %>
+  <%= submit_tag("iOS用CSSビュー", {name: :view, value: 'css_touch'}) %>
+  <%= submit_tag("PC用CSSビュー", {name: :view, value: 'css'}) %>
+  <%= submit_tag("Flashビュー", {name: :view, value: 'flash'}) %>
 <% end %>
 <% else %>
-<a href="/oauth">OAuthで認証</a>
+<p><a href="/oauth">OAuthで認証</a></p>
 <% end %>

@@ -1,12 +1,19 @@
 <% if flash[:notice].present? %>
 <p class="notice"><%= flash[:notice] %></p>
 <% end %>
+<%
+  case @view
+  when 'flash'
+%>
 <div class="alternative3d">
   <div class="media"><script type="text/javascript" src="/views/inject.js"><![CDATA[
 ]]></script></div>
   <div class="copy"><p>Equirectangular panorama with ActionScript(Alternativa3D).</p>
   <p><a href="https://github.com/suzumura-ss/flash_sphere_panorama">https://github.com/suzumura-ss/flash_sphere_panorama</a></p></div>
 </div>
+<%
+  when 'css'
+%>
 <div class="css3_3d_transform">
   <div class="header">
     <link rel="stylesheet" href="/views/cubic.css" type="text/css" />
@@ -31,4 +38,26 @@
   <div class="copy"><p>Cubic panorama with CSS3/3D-Transform, 6-textures.</p>
     <p><a href="https://github.com/suzumura-ss/css3d_cubic_panorama">https://github.com/suzumura-ss/css3d_cubic_panorama</a></p></div>
 </div>
-<p><%= link_to 'Top', root_path %></p>
+<%
+  when 'css_touch'
+%>
+  <link rel="stylesheet" href="/views/css_touch.css" type="text/css" />
+  <script src="/views/css_touch.js" type="text/javascript"></script>
+  <div id="container">
+    <div id="cube">
+      <img id="side1" class="side" src="/views/grandcentral1.png" />
+      <img id="side2" class="side" src="/views/grandcentral2.png" />
+      <img id="side3" class="side" src="/views/grandcentral3.png" />
+      <img id="side4" class="side" src="/views/grandcentral4.png" />
+      <img id="side5" class="side" src="/views/grandcentral5.png" />
+      <img id="side6" class="side" src="/views/grandcentral6.png" />
+    </div>
+  </div>
+  <div id="controller">&nbsp;</div>
+  <div id="loading">loading...<br />please wait</div>
+<% end %>
+<% unless @view == 'css_touch' %>
+<div class="menu">
+  <p><%= link_to 'Top', root_path %></p>
+</div>
+<% end %>

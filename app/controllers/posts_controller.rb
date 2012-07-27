@@ -10,11 +10,26 @@ class PostsController < ApplicationController
             a[rand(a.size)]
           end
           ).join
-    TwitterLogic.tweet '3D view link: ' + url_for(controller: 'posts', action: 'show', id: id, only_path: false), session['access_token'], session['access_token_secret']
-    flash[:notice] = '3Dビューを作成してtweetしました'
-    redirect_to action: 'show', id: id
+    view = case params[:view]
+    when 'css_touch'
+      'css_touch'
+    when 'css'
+      'css'
+    else
+      'flash'
+    end
+    TwitterLogic.tweet '3D view(' + view + '): ' + url_for(controller: 'posts', action: 'show', id: id, only_path: false, view: view), session['access_token'], session['access_token_secret']
+    redirect_to action: 'show', id: id, view: view
   end
 
   def show
+    @view = case params[:view]
+    when 'css_touch'
+      'css_touch'
+    when 'css'
+      'css'
+    else
+      'flash'
+    end
   end
 end
