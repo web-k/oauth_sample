@@ -1,9 +1,9 @@
 <% if session['access_token'].present? %>
 <p><a href="/logout">ログアウト</a></p>
 <%= form_tag({:controller=>'posts', :action=>'create'}) do %>
-  <%= submit_tag("iOS用CSSビュー", {name: :view, value: 'css_touch'}) %>
   <%= submit_tag("PC用CSSビュー", {name: :view, value: 'css'}) %>
   <%= submit_tag("Flashビュー", {name: :view, value: 'flash'}) %>
+  <%= submit_tag("iOS用CSSビュー", {name: :view, value: 'css_touch'}) %>
   <p><%= check_box_tag(:tweet, true) %><%= label_tag(:tweet) %></p>
 <% end %>
 <% else %>

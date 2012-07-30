@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:og="http://ogp.me/ns#">
 <head>
   <title>OauthSample</title>
   <%= stylesheet_link_tag    "application", :media => "all" %>
@@ -7,6 +7,11 @@
   <%= csrf_meta_tags %>
   <meta name="viewport" content="width=device-width, height=device-height" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta property="og:title" content="タイトル" />
+  <meta property="og:site_name" content="OauthSample" />
+  <meta property="og:type" content="article" />
+  <meta property="og:description" content="Oauth認証を使ってログインしたアカウントでtweet等のシエア操作を行なって3Dビューを紹介" />
+  <meta property="og:url" content="<%= request.url %>" />
 </head>
 <body onload="init()">
 
