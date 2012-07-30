@@ -4,6 +4,7 @@
   <%= submit_tag("iOS用CSSビュー", {name: :view, value: 'css_touch'}) %>
   <%= submit_tag("PC用CSSビュー", {name: :view, value: 'css'}) %>
   <%= submit_tag("Flashビュー", {name: :view, value: 'flash'}) %>
+  <p><%= check_box_tag(:tweet, true) %><%= label_tag(:tweet) %></p>
 <% end %>
 <% else %>
 <p><a href="/oauth">OAuthで認証</a></p>

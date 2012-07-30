@@ -18,7 +18,7 @@ class PostsController < ApplicationController
     else
       'flash'
     end
-    TwitterLogic.tweet '3D view(' + view + '): ' + url_for(controller: 'posts', action: 'show', id: id, only_path: false, view: view), session['access_token'], session['access_token_secret']
+    TwitterLogic.tweet '3D view(' + view + '): ' + url_for(controller: 'posts', action: 'show', id: id, only_path: false, view: view), session['access_token'], session['access_token_secret'] if params[:tweet]
     redirect_to action: 'show', id: id, view: view
   end
 
