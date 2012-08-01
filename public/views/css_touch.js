@@ -32,6 +32,10 @@ var activeTouchId = 0;
 var lastX;
 var lastY;
 
+$(document).ready(function(){
+  $("#rotation").attr('checked',false);
+});
+
 function init()
 {
   var e = document.getElementById("controller");
@@ -204,4 +208,20 @@ function hasTouchEvent()
 function hideUrlBar()
 {
   setTimeout(function () { window.scrollTo(0, 1) }, 100);
+}
+
+var autoRotationTimeoutID;
+function autoRotation()
+{
+    var moveX = parseInt(1);
+    rotateByTouch(0, 0, moveX, 0);
+    autoRotationTimeoutID = setTimeout("autoRotation()", 10);
+}
+function rotation_check()
+{
+  if( $("#rotation").attr('checked')){
+    autoRotation();
+  }else{
+    clearTimeout(autoRotationTimeoutID);
+  } 
 }

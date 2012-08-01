@@ -10,6 +10,10 @@ var lastY;
 var lastZ;
 var mediaController;
 
+$(document).ready(function(){
+  $("#rotation").attr('checked',false);
+});
+
 function init()
 {
   build_cube();
@@ -158,3 +162,19 @@ function checksupport()
   }
   return false;
 } 
+
+var autoRotationTimeoutID;
+function autoRotation()
+{
+    var moveX = parseInt(1);
+    doRotate(0, 0, moveX, 0, 0);
+    autoRotationTimeoutID = setTimeout("autoRotation()", 10);
+}
+function rotation_check()
+{
+  if( $("#rotation").attr('checked')){
+    autoRotation();
+  }else{
+    clearTimeout(autoRotationTimeoutID);
+  }
+}

@@ -45,6 +45,7 @@
       <img src="/views/forest6.jpg" />
     </div>
   </div>
+  <p class="menu">自動で横回転する <%= check_box_tag 'rotation','rotation', false, :onclick=>"rotation_check();" %></p>
   <div class="copy"><p>Cubic panorama with CSS3/3D-Transform, 6-textures.</p>
     <p><a href="https://github.com/suzumura-ss/css3d_cubic_panorama">https://github.com/suzumura-ss/css3d_cubic_panorama</a></p></div>
 </div>
@@ -65,6 +66,7 @@
   </div>
   <div id="controller">&nbsp;</div>
   <div id="loading">loading...<br />please wait</div>
+  <p class="menu">自動で横回転する <%= check_box_tag 'rotation','rotation', false, :onclick=>"rotation_check();" %></p>
 <% end %>
 <% unless @view == 'css_touch' %>
 <div class="menu <%= @view %>">
