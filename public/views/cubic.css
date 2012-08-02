@@ -106,5 +106,6 @@ body {
 }
 
 .css3_3d_transform .body {
-  padding-bottom: 400px;
+  width: 500px;
+  height: 380px;
 }

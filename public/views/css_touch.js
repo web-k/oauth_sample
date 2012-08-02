@@ -31,14 +31,17 @@ var rotX = 0;
 var activeTouchId = 0;
 var lastX;
 var lastY;
+var $controller;
 
-$(document).ready(function(){
+$(function(){
   $("#rotation").attr('checked',false);
+  init();
 });
 
 function init()
 {
-  var e = document.getElementById("controller");
+  $controller = $("#controller");
+  var e = $controller.get(0);
   try {
     build_texture();
   } catch(e) {
@@ -57,17 +60,11 @@ function init()
 
     e.addEventListener("gesturestart", stubOut, false);
     e.addEventListener("gesturechanged", stubOut, false);
-    document.addEventListener("gesturestart", stubOut, false);
-    document.addEventListener("gesturechanged", stubOut, false);
   } else {
     e.addEventListener("mousedown", startDrag, false);
     e.addEventListener("mousemove", moveDrag, false);
     e.addEventListener("mouseup", endDrag, false);
     e.addEventListener("mouseout", endDrag, false);
-    document.addEventListener("mousedown", startDrag, false);
-    document.addEventListener("mousemove", moveDrag, false);
-    document.addEventListener("mouseup", endDrag, false);
-    document.addEventListener("mouseout", endDrag, false);
   }
   
   var loadingE = document.getElementById("loading");
@@ -118,27 +115,40 @@ function endDrag(e)
   activeTouchId = 0;
 }
 
+function in_area(x,y)
+{
+  var c_x = $controller.offset().left;
+  var c_y = $controller.offset().top;
+  var c_w = $controller.width();
+  var c_h = $controller.height();
+  return ((c_x<=x && x<=c_x+c_w) && (c_y<=y && y<=c_y+c_h))
+}
 
 function startTouch(e)
 {
+  var x = e.changedTouches[0].pageX;
+  var y = e.changedTouches[0].pageY;
+ 
+  if (!in_area(x,y)) { return; }
   e.preventDefault();
   //  take the first touch
   activeTouchId = e.changedTouches[0].identifier;
   lastX = e.changedTouches[0].pageX;
   lastY = e.changedTouches[0].pageY;
+ 
 }
 
 
 function moveTouch(e)
 {
-  e.preventDefault();
-
   if (activeTouchId) {
     //  see if the tracked finger was actually moved
     for (var i=0; i<e.changedTouches.length; i++) {
       if (e.changedTouches[i].identifier == activeTouchId) {
         //  it did move!
         var t = e.changedTouches[i];
+        if (!in_area(t.pageX, t.pageY)) { continue; }
+        e.preventDefault();
         rotateByTouch(lastX, lastY, t.pageX, t.pageY);
         lastX = t.pageX;
         lastY = t.pageY;
@@ -151,12 +161,13 @@ function moveTouch(e)
 
 function endTouch(e)
 {
-  e.preventDefault();
-
   if (activeTouchId) {
     //  see if the tracked finger was actually lifted
     for (var i=0; i<e.changedTouches.length; i++) {
       if (e.changedTouches[i].identifier == activeTouchId) {
+        var t = e.changedTouches[i];
+        if (!in_area(t.pageX, t.pageY)) { continue; }
+        e.preventDefault();
         //  yup
         activeTouchId = 0;  //  stop following it
         break;  //  stop searching

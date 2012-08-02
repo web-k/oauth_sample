@@ -10,15 +10,16 @@ var lastY;
 var lastZ;
 var mediaController;
 
-$(document).ready(function(){
+$(function(){
   $("#rotation").attr('checked',false);
+  init();
 });
 
 function init()
 {
   build_cube();
 
-  var e = $(".css3_3d_transform");
+  var e = $("#controller");
   e.mousewheel(moveWheel);
   e.mousedown(startDrag);
   e.mousemove(moveDrag);
