@@ -40,35 +40,24 @@ $(function(){
 
 function init()
 {
-  $controller = $("#controller");
-  var e = $controller.get(0);
   try {
     build_texture();
   } catch(e) {
   }
-  if (hasTouchEvent()) {
-    // hideUrlBar();
-    //  touch events!
-    e.addEventListener("touchstart", startTouch, false);
-    e.addEventListener("touchmove", moveTouch, false);
-    e.addEventListener("touchend", endTouch, false);
-    e.addEventListener("touchcancel", cancelTouch, false);
-    document.addEventListener("touchstart", startTouch, false);
-    document.addEventListener("touchmove", moveTouch, false);
-    document.addEventListener("touchend", endTouch, false);
-    document.addEventListener("touchcancel", cancelTouch, false);
 
-    e.addEventListener("gesturestart", stubOut, false);
-    e.addEventListener("gesturechanged", stubOut, false);
-  } else {
-    e.addEventListener("mousedown", startDrag, false);
-    e.addEventListener("mousemove", moveDrag, false);
-    e.addEventListener("mouseup", endDrag, false);
-    e.addEventListener("mouseout", endDrag, false);
-  }
+  $controller = $("#controller");
+  $controller.on("vmousedown", startDrag);
+  $controller.on("vmousemove", moveDrag);
+  $controller.on("vmouseup", endDrag);
+  $controller.on("vmouseout", endDrag);
+
+  var $document = $(document);
+  $document.on("vmousedown", startDrag);
+  $document.on("vmousemove", moveDrag);
+  $document.on("vmouseup", endDrag);
+  $document.on("vmouseout", endDrag);
   
-  var loadingE = document.getElementById("loading");
-  loadingE.parentNode.removeChild(loadingE);
+  $("#loading").remove();
 }
 
 function build_texture()
@@ -90,6 +79,7 @@ function copyImage(dst, x, y)
 
 function startDrag(e)
 {
+  if (!in_area(e.clientX, e.clientY)) { return; }
   e.preventDefault();
   window.console.log(e.type + ": " + e.clientX + ", " + e.clientY);
   activeTouchId = "mouse";
@@ -99,6 +89,7 @@ function startDrag(e)
 
 function moveDrag(e)
 {
+  if (!in_area(e.clientX, e.clientY)) { return; }
   e.preventDefault();
   if(activeTouchId) {
     window.console.log(e.type + ": " + e.clientX + ", " + e.clientY);
@@ -110,6 +101,7 @@ function moveDrag(e)
 
 function endDrag(e)
 {
+  if (!in_area(e.clientX, e.clientY)) { return; }
   e.preventDefault();
   window.console.log(e.type + ": " + e.target.id);
   activeTouchId = 0;
@@ -124,97 +116,18 @@ function in_area(x,y)
   return ((c_x<=x && x<=c_x+c_w) && (c_y<=y && y<=c_y+c_h))
 }
 
-function startTouch(e)
-{
-  var x = e.changedTouches[0].pageX;
-  var y = e.changedTouches[0].pageY;
- 
-  if (!in_area(x,y)) { return; }
-  e.preventDefault();
-  //  take the first touch
-  activeTouchId = e.changedTouches[0].identifier;
-  lastX = e.changedTouches[0].pageX;
-  lastY = e.changedTouches[0].pageY;
- 
-}
-
-
-function moveTouch(e)
-{
-  if (activeTouchId) {
-    //  see if the tracked finger was actually moved
-    for (var i=0; i<e.changedTouches.length; i++) {
-      if (e.changedTouches[i].identifier == activeTouchId) {
-        //  it did move!
-        var t = e.changedTouches[i];
-        if (!in_area(t.pageX, t.pageY)) { continue; }
-        e.preventDefault();
-        rotateByTouch(lastX, lastY, t.pageX, t.pageY);
-        lastX = t.pageX;
-        lastY = t.pageY;
-        break;  //  stop searching
-      }
-    }
-  }
-}
-
-
-function endTouch(e)
-{
-  if (activeTouchId) {
-    //  see if the tracked finger was actually lifted
-    for (var i=0; i<e.changedTouches.length; i++) {
-      if (e.changedTouches[i].identifier == activeTouchId) {
-        var t = e.changedTouches[i];
-        if (!in_area(t.pageX, t.pageY)) { continue; }
-        e.preventDefault();
-        //  yup
-        activeTouchId = 0;  //  stop following it
-        break;  //  stop searching
-      }
-    }
-  }    
-}
-
-
-function cancelTouch(e)
-{
-  activeTouchId = 0;
-}
-
-
 function rotateByTouch(lastX, lastY, curX, curY)
 {
-  var e = document.getElementById('cube');
-  if ( ! e)
-    return;
+  var $e = $('#cube');
+  if ($e.size()==0) { return; }
 
   rotY -= (curX - lastX) * 0.25;
   rotX += (curY - lastY) * 0.25;
   rotX = Math.max(-88, Math.min(88, rotX));
 
-  e.style.webkitTransform = 'translateZ(200px) rotateX(' + rotX + 'deg) rotateY(' + rotY + 'deg)';
+  var transform_style = 'translateZ(200px) rotateX(' + rotX + 'deg) rotateY(' + rotY + 'deg)';
+  $e.css('-webkit-transform', transform_style);
 }
-
-function stubOut(e)
-{
-  e.preventDefault();
-}
-
-function hasTouchEvent()
-{
-  if (document && document.createEvent) {
-    try {
-      document.createEvent('TouchEvent');
-      return true;
-    }
-    catch (e) {
-        //  silently fail
-    }
-  }
-  return false;
-}
-
 
 function hideUrlBar()
 {
