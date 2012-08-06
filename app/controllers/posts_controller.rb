@@ -15,8 +15,10 @@ class PostsController < ApplicationController
       'css_touch'
     when 'css'
       'css'
-    else
+    when 'flash'
       'flash'
+    else
+      nil
     end
     TwitterLogic.tweet '3D view(' + view + '): ' + url_for(controller: 'posts', action: 'show', id: id, only_path: false, view: view), session['access_token'], session['access_token_secret'] if params[:tweet]
     redirect_to action: 'show', id: id, view: view
@@ -28,8 +30,11 @@ class PostsController < ApplicationController
       'css_touch'
     when 'css'
       'css'
-    else
+    when 'flash'
       'flash'
+    else
+      ios? ? 'css_touch' : 'flash'
     end
   end
+  
 end
