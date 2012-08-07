@@ -72,8 +72,8 @@ function build_texture()
 
 function copyImage(dst, x, y)
 {
-  var ctx = $(dst)[0].getContext("2d");
-  var src = $("#texture")[0];
+  var ctx = $("#controller")[0].getContext("2d");
+  var src = $(dst)[0];
   ctx.drawImage(src, x*512, y*512, 512, 512, 0, 0, 283, 283);
 }
 
