@@ -119,9 +119,17 @@ body {
   visibility: hidden;
 }
 
+.css3_3d_transform {
+    margin: 0;
+}
+
+.body {
+    height: 320px;
+    width: 320px;
+    position: relative;
+}
+
 .menu {
-  position: absolute;
-  top: 320px;
-  left: 8px;
-  z-index: 200;
+    width: 300px;
+    margin-left: 8px;
 }

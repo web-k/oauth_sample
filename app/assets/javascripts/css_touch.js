@@ -79,29 +79,29 @@ function copyImage(dst, x, y)
 
 function startDrag(e)
 {
-  if (!in_area(e.clientX, e.clientY)) { return; }
+  if (!in_area(e.pageX, e.pageY)) { return; }
   e.preventDefault();
-  window.console.log(e.type + ": " + e.clientX + ", " + e.clientY);
+  window.console.log(e.type + ": " + e.pageX + ", " + e.pageY);
   activeTouchId = "mouse";
-  lastX = e.clientX;
-  lastY = e.clientY;
+  lastX = e.pageX;
+  lastY = e.pageY;
 }
 
 function moveDrag(e)
 {
-  if (!in_area(e.clientX, e.clientY)) { return; }
+  if (!in_area(e.pageX, e.pageY)) { return; }
   e.preventDefault();
   if(activeTouchId) {
-    window.console.log(e.type + ": " + e.clientX + ", " + e.clientY);
-    rotateByTouch(lastX, lastY, e.clientX, e.clientY);
-    lastX = e.clientX;
-    lastY = e.clientY;
+    window.console.log(e.type + ": " + e.pageX + ", " + e.pageY);
+    rotateByTouch(lastX, lastY, e.pageX, e.pageY);
+    lastX = e.pageX;
+    lastY = e.pageY;
   }
 }
 
 function endDrag(e)
 {
-  if (!in_area(e.clientX, e.clientY)) { return; }
+  if (!in_area(e.pageX, e.pageY)) { return; }
   e.preventDefault();
   window.console.log(e.type + ": " + e.target.id);
   activeTouchId = 0;
