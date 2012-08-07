@@ -1,4 +1,5 @@
 class AuthenticationController < ApplicationController
+
   def self.consumer
     consumer_key = ENV['CONSUMER_KEY']
     consumer_secret = ENV['CONSUMER_SECRET'] 
@@ -69,5 +70,41 @@ class AuthenticationController < ApplicationController
   def logout
     reset_session
     redirect_to :action => :index
+  end
+
+  def fb_login
+    client = OAuth2::Client.new(
+      ENV['FB_CONSUMER_KEY'],
+      ENV['FB_CONSUMER_SECRET'],
+      :site=>"https://graph.facebook.com",
+      :token_url => "/oauth/access_token"
+    )
+    options ={:client_id => ENV['FB_CONSUMER_KEY'], :redirect_uri => url_for(:host => request.host, :action => "fb_callback"), :scope => 'offline_access,publish_stream'}
+    redirect_to client.auth_code.authorize_url(options)
+  end
+
+  def fb_callback
+    options = {:site=>"https://graph.facebook.com", :token_url => "/oauth/access_token"}
+    if ENV['http_proxy'].present?
+      uri = URI.parse ENV['http_proxy']
+      options[:connection_opts] = {proxy: {uri: uri.scheme+'://'+uri.host+':'+uri.port.to_s, user: uri.user, password: uri.password}}
+    end
+    client = OAuth2::Client.new(
+      ENV['FB_CONSUMER_KEY'],
+      ENV['FB_CONSUMER_SECRET'],
+      options
+    )
+    begin
+      access_token = client.auth_code.get_token(params[:code], {:parse => :query, :redirect_uri => url_for(:host => request.host, :action => "fb_callback")})
+      session['fb_access_token'] = access_token.token
+      token = OAuth2::AccessToken.new(client, session['fb_access_token'], :mode => :query, :param_name => :access_token)
+      me = token.get("/me").parsed
+      user_icon = token.get("/me?fields=picture").parsed
+      session['fb_user_icon_url'] = user_icon['picture']['data']['url']
+      session['account_name'] = me["name"]
+    rescue
+      flash[:notice] = "Authentication failed"
+    end
+    redirect_to root_path
   end
 end

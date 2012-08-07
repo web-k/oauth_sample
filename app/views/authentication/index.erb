@@ -1,9 +1,14 @@
 <% if flash[:notice].present? %>
 <p class="notice"><%= flash[:notice] %></p>
 <% end %>
-<% if session['access_token'].present? %>
+<% if session['access_token'].present? || session['fb_access_token'].present? %>
+<%
+  image_url =
+    if session['fb_user_icon_url'].present? then session['fb_user_icon_url']
+    else session['account_image_url'] end
+ %>
 <p>
-  <%= image_tag(session['account_image_url'], :class=>"account_image", :size=>"24x24") %>
+  <%= image_tag(image_url, :class=>"account_image", :size=>"24x24") %>
   <span class="account_name"><%= session['account_name'] %></span>
   <a href="/logout">ログアウト</a>
 </p>
@@ -15,7 +20,8 @@
   <p><%= check_box_tag(:tweet, true) %><%= label_tag(:tweet) %></p>
 <% end %>
 <% else %>
-<p><a href="/oauth">OAuthで認証</a></p>
+<p><a href="/oauth">twitterでログイン</a></p>
+<p><a href="/fb_login">facebookでログイン</a></p>
 <p class="sample">サンプル:
   <%= link_to 'CSS(PC)', controller: 'posts', action: 'show', id: '1', view: 'css' %>
   <%= link_to 'Flash', controller: 'posts', action: 'show', id: '1', view: 'flash' %>
