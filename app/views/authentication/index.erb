@@ -1,5 +1,12 @@
+<% if flash[:notice].present? %>
+<p class="notice"><%= flash[:notice] %></p>
+<% end %>
 <% if session['access_token'].present? %>
-<p><a href="/logout">ログアウト</a></p>
+<p>
+  <%= image_tag(session['account_image_url'], :class=>"account_image", :size=>"24x24") %>
+  <span class="account_name"><%= session['account_name'] %></span>
+  <a href="/logout">ログアウト</a>
+</p>
 <%= form_tag({:controller=>'posts', :action=>'create'}) do %>
   <%= submit_tag("PC用CSSビュー", {name: :view, value: 'css'}) %>
   <%= submit_tag("Flashビュー", {name: :view, value: 'flash'}) %>

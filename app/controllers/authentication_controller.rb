@@ -53,7 +53,8 @@ class AuthenticationController < ApplicationController
         redirect_to :action => :index
         return
       end
-      session['account'] = @user_info['screen_name']
+      session['account_name'] = @user_info['screen_name']
+      session['account_image_url'] = @user_info['profile_image_url']
       session['access_token'] = access_token.token
       session['access_token_secret'] = access_token.secret
       redirect_to root_path
