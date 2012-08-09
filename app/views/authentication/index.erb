@@ -16,4 +16,9 @@
 <% end %>
 <% else %>
 <p><a href="/oauth">OAuthで認証</a></p>
+<p class="sample">サンプル:
+  <%= link_to 'CSS(PC)', controller: 'posts', action: 'show', id: '1', view: 'css' %>
+  <%= link_to 'Flash', controller: 'posts', action: 'show', id: '1', view: 'flash' %>
+  <%= link_to 'CSS(Mobile)', controller: 'posts', action: 'show', id: '1', view: 'css_touch' %>
+</p>
 <% end %>
