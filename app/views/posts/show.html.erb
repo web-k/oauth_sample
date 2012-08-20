@@ -1,16 +1,16 @@
 <%= content_for :header do %>
+<%= stylesheet_link_tag   "css_3d_cube" %>
+<%= javascript_include_tag "css_3d_cube" %>
 <%
   case @view
   when 'css' %>
-  <link rel="stylesheet" href="/views/cubic.css" type="text/css" />
-  <script src="/views/js/cubic.js" type="text/javascript"></script>
+  <%= javascript_include_tag "css_3d_mouse" %>
 <%
   when 'css_touch' %>
   <%= javascript_include_tag "jquery.mobile.config" %>
   <%= stylesheet_link_tag    "jquery.mobile-1.1.1.min" %>
   <%= javascript_include_tag "jquery.mobile-1.1.1.min" %>
-  <%= stylesheet_link_tag   "css_touch" %>
-  <%= javascript_include_tag "css_touch" %>
+  <%= javascript_include_tag "css_3d_touch" %>
 <%
   end
 end %>
@@ -38,42 +38,18 @@ end %>
   <p><a href="https://github.com/suzumura-ss/flash_sphere_panorama">https://github.com/suzumura-ss/flash_sphere_panorama</a></p></div>
 </div>
 <%
-  when 'css'
-%>
-<div class="css3_3d_transform">
-  <div class="header">
-    <style id="camera"></style>
-  </div>
-  <div class="body">
-    <div id="controller">&nbsp;</div>
-    <div id="container" class="container"></div>
-    <div id="loading" class="infowindow">loading...<br />please wait</div>
-    <div id="texture">
-      <img src="/views/forest1.jpg" />
-      <img src="/views/forest2.jpg" />
-      <img src="/views/forest3.jpg" />
-      <img src="/views/forest4.jpg" />
-      <img src="/views/forest5.jpg" />
-      <img src="/views/forest6.jpg" />
-    </div>
-  </div>
-  <p class="menu"><%= check_box_tag 'rotation','rotation', false, :onclick=>"rotation_check();" %><%= label_tag 'rotation', '自動で横回転する'  %></p>
-  <div class="copy"><p>Cubic panorama with CSS3/3D-Transform, 6-textures.</p>
-    <p><a href="https://github.com/suzumura-ss/css3d_cubic_panorama">https://github.com/suzumura-ss/css3d_cubic_panorama</a></p></div>
-</div>
-<%
-  when 'css_touch'
+  when 'css', 'css_touch'
 %>
 <div class="css3_3d_transform">
   <div class="body">
     <div id="container">
       <div id="cube">
-        <img id="side1" class="side" src="/views/grandcentral1.png" />
-        <img id="side2" class="side" src="/views/grandcentral2.png" />
-        <img id="side3" class="side" src="/views/grandcentral3.png" />
-        <img id="side4" class="side" src="/views/grandcentral4.png" />
-        <img id="side5" class="side" src="/views/grandcentral5.png" />
-        <img id="side6" class="side" src="/views/grandcentral6.png" />
+        <img id="side1" class="side" src="/views/forest1.jpg" />
+        <img id="side2" class="side" src="/views/forest2.jpg" />
+        <img id="side3" class="side" src="/views/forest3.jpg" />
+        <img id="side4" class="side" src="/views/forest4.jpg" />
+        <img id="side5" class="side" src="/views/forest5.jpg" />
+        <img id="side6" class="side" src="/views/forest6.jpg" />
       </div>
     </div>
     <canvas id="controller">&nbsp;</canvas>

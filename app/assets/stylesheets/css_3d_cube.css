@@ -64,6 +64,8 @@ body {
 
 /* cube side */
 .side {
+    width: 283px;
+    height: 283px;
     position: absolute;
     left: 18px; /* 18px centres a 283-pixel-wide image in a 320-pixel-wide container */
     top: 18px;  /* 18px vertically centres the 283-pixel-tall image in a 320-pixel-tall container */
