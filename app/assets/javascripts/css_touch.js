@@ -69,23 +69,36 @@ function init()
   }
 }
 
-
-
 function build_texture()
 {
-  copyImage("#side1", 0, 0);
-  copyImage("#side2", 1, 0);
-  copyImage("#side3", 2, 0);
-  copyImage("#side4", 0, 1);
-  copyImage("#side5", 1, 1);
-  copyImage("#side6", 2, 1);
+  initCss3dStyle();
+  copyImage("#side1", 'translateZ(-141px)');
+  copyImage("#side2", 'rotateY(-90deg) translateZ(-141px)');
+  copyImage("#side3", 'rotateY(180deg) translateZ(-141px)');
+  copyImage("#side4", 'rotateY(90deg) translateZ(-141px)');
+  copyImage("#side5", 'rotateX(-90deg) translateZ(-141px)');
+  copyImage("#side6", 'rotateX(90deg) translateZ(-141px)');
 }
 
-function copyImage(dst, x, y)
+function initCss3dStyle()
 {
-  var ctx = $("#controller")[0].getContext("2d");
-  var src = $(dst)[0];
-  ctx.drawImage(src, x*512, y*512, 512, 512, 0, 0, 283, 283);
+  $('#controller')
+    .css('transform', '1000px');
+  $('#container')
+    .css('transform-style', 'preserve-3d')
+    .css('perspective', '200');
+  $('#cube')
+    .css('transform-style', 'preserve-3d')
+    .css('transform', 'translateZ(200px)');
+  $('.side')
+    .css('backface-visibility', 'hidden');
+  $('#loading')
+    .css('border-radius', '8px');
+}
+
+function copyImage(dst, transform)
+{
+  $(dst).css('transform', transform);
 }
 
 function startDrag(e)

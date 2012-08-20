@@ -39,8 +39,6 @@ body {
     height: 320px;
     top: 0px;
     left: 0px;
-    -webkit-transform: translateZ(1000px);
-    -moz-transform: translateZ(1000px);
 }
 
 /* the 3-D view */
@@ -48,10 +46,6 @@ body {
     width: 320px;
     height: 320px;
     overflow: hidden;
-    -webkit-perspective: 200;
-    -webkit-transform-style: preserve-3d;
-    -moz-perspective: 200;
-    -moz-transform-style: preserve-3d;
     position: absolute;
     top: 0px;
     left: 0px;
@@ -61,10 +55,6 @@ body {
 #cube {
     width: 320px;
     height: 320px;
-    -webkit-transform-style: preserve-3d;
-    -webkit-transform: translateZ(200px);   /* this puts the box's centre right on top of the camera */
-    -moz-transform-style: preserve-3d;
-    -moz-transform: translateZ(200px);   /* this puts the box's centre right on top of the camera */
 }
 
 #container img {
@@ -77,39 +67,6 @@ body {
     position: absolute;
     left: 18px; /* 18px centres a 283-pixel-wide image in a 320-pixel-wide container */
     top: 18px;  /* 18px vertically centres the 283-pixel-tall image in a 320-pixel-tall container */
-    -webkit-backface-visibility: hidden;
-    -moz-backface-visibility: hidden;
-}
-
-/* initial cube setup */
-#side1 {
-    -webkit-transform: translateZ(-141px);
-    -moz-transform: translateZ(-141px);
-}
-
-#side2 {
-    -webkit-transform: rotateY(-90deg) translateZ(-141px);
-    -moz-transform: rotateY(-90deg) translateZ(-141px);
-}
-
-#side3 {
-    -webkit-transform: rotateY(180deg) translateZ(-141px);
-    -moz-transform: rotateY(180deg) translateZ(-141px);
-}
-
-#side4 {
-    -webkit-transform: rotateY(90deg) translateZ(-141px);
-    -moz-transform: rotateY(90deg) translateZ(-141px);
-}
-
-#side5 {
-    -webkit-transform: rotateX(-90deg) translateZ(-141px);
-    -moz-transform: rotateX(-90deg) translateZ(-141px);
-}
-
-#side6 {
-    -webkit-transform: rotateX(90deg) translateZ(-141px);
-    -moz-transform: rotateX(90deg) translateZ(-141px);
 }
 
 #loading {
@@ -123,8 +80,6 @@ body {
     text-align: center;
     font: bold 24px Helvetica;
     padding: 20px;
-    -webkit-border-radius: 8px;
-    -moz-border-radius: 8px;
     opacity: 0.7;
 }
 
