@@ -27,10 +27,12 @@ OTHER DEALINGS IN THE SOFTWARE.
 
 var rotY = 0;
 var rotX = 0;
+var camZ = 200;
 
-var activeTouchId = 0;
+var active = 0;
 var lastX;
 var lastY;
+var lastZ;
 var $controller;
 
 $(function(){
@@ -46,19 +48,28 @@ function init()
   }
 
   $controller = $("#controller");
+  $controller.on("mousewheel", moveWheel);
   $controller.on("vmousedown", startDrag);
   $controller.on("vmousemove", moveDrag);
   $controller.on("vmouseup", endDrag);
   $controller.on("vmouseout", endDrag);
 
   var $document = $(document);
+  $document.on("mousewheel", moveWheel);
   $document.on("vmousedown", startDrag);
   $document.on("vmousemove", moveDrag);
   $document.on("vmouseup", endDrag);
   $document.on("vmouseout", endDrag);
   
-  $("#loading").remove();
+  if(checksupport()) {
+    $("#loading").remove();
+    doRotate(0, 0, 0, 0, 0);
+  } else {
+    $("#loading").text("CSS/3D is not supported.");
+  }
 }
+
+
 
 function build_texture()
 {
@@ -81,8 +92,7 @@ function startDrag(e)
 {
   if (!in_area(e.pageX, e.pageY)) { return; }
   e.preventDefault();
-  window.console.log(e.type + ": " + e.pageX + ", " + e.pageY);
-  activeTouchId = "mouse";
+  active = "mouse";
   lastX = e.pageX;
   lastY = e.pageY;
 }
@@ -91,9 +101,8 @@ function moveDrag(e)
 {
   if (!in_area(e.pageX, e.pageY)) { return; }
   e.preventDefault();
-  if(activeTouchId) {
-    window.console.log(e.type + ": " + e.pageX + ", " + e.pageY);
-    rotateByTouch(lastX, lastY, e.pageX, e.pageY);
+  if(active) {
+    doRotate(lastX, lastY, e.pageX, e.pageY, 0);
     lastX = e.pageX;
     lastY = e.pageY;
   }
@@ -103,8 +112,13 @@ function endDrag(e)
 {
   if (!in_area(e.pageX, e.pageY)) { return; }
   e.preventDefault();
-  window.console.log(e.type + ": " + e.target.id);
-  activeTouchId = 0;
+  active = 0;
+}
+
+function moveWheel(e, d)
+{
+  e.preventDefault();
+  doRotate(0, 0, 0, 0, d);
 }
 
 function in_area(x,y)
@@ -116,17 +130,20 @@ function in_area(x,y)
   return ((c_x<=x && x<=c_x+c_w) && (c_y<=y && y<=c_y+c_h))
 }
 
-function rotateByTouch(lastX, lastY, curX, curY)
+function doRotate(lastX, lastY, curX, curY, wheelDelta)
 {
   var $e = $('#cube');
+  var $c = $('#container');
   if ($e.size()==0) { return; }
 
   rotY -= (curX - lastX) * 0.25;
   rotX += (curY - lastY) * 0.25;
   rotX = Math.max(-88, Math.min(88, rotX));
+  camZ += wheelDelta;
 
-  var transform_style = 'translateZ(200px) rotateX(' + rotX + 'deg) rotateY(' + rotY + 'deg)';
-  $e.css('-webkit-transform', transform_style);
+  var transform_style = "translateZ(" + Math.floor(camZ) + "px) rotateX(" + Math.floor(rotX) + "deg) rotateY(" + Math.floor(rotY) + "deg)";
+  $e.css('transform', transform_style);
+  $c.css('perspective', Math.floor(camZ) +'px');
 }
 
 function hideUrlBar()
@@ -134,11 +151,24 @@ function hideUrlBar()
   setTimeout(function () { window.scrollTo(0, 1) }, 100);
 }
 
+function checksupport()
+{
+  var props = ['perspectiveProperty', 'WebkitPerspective', 'MozPerspective', 'OPerspective', 'msPerspective'];
+  var f = $("#cube")[0];
+  for(var i=0; i<props.length; i++) {
+    if(props[i] in f.style) {
+      var p = props[i].replace('Perspective','');
+      return p.toLowerCase();
+    }
+  }
+  return false;
+} 
+
 var autoRotationTimeoutID;
 function autoRotation()
 {
     var moveX = parseInt(1);
-    rotateByTouch(0, 0, moveX, 0);
+    doRotate(0, 0, moveX, 0, 0);
     autoRotationTimeoutID = setTimeout("autoRotation()", 10);
 }
 function rotation_check()
@@ -147,5 +177,5 @@ function rotation_check()
     autoRotation();
   }else{
     clearTimeout(autoRotationTimeoutID);
-  } 
+  }
 }
