@@ -27,7 +27,7 @@ OTHER DEALINGS IN THE SOFTWARE.
 
 var rotY = 0;
 var rotX = 0;
-var camZ = 200;
+var camZ;
 
 var active = 0;
 var lastX;
@@ -38,33 +38,48 @@ var $controller;
 function build_texture()
 {
   initCss3dStyle();
-  copyImage("#side1", 'translateZ(-141px)');
-  copyImage("#side2", 'rotateY(-90deg) translateZ(-141px)');
-  copyImage("#side3", 'rotateY(180deg) translateZ(-141px)');
-  copyImage("#side4", 'rotateY(90deg) translateZ(-141px)');
-  copyImage("#side5", 'rotateX(-90deg) translateZ(-141px)');
-  copyImage("#side6", 'rotateX(90deg) translateZ(-141px)');
+  buildCube();
 }
 
 function initCss3dStyle()
 {
+  rotY = 0;
+  rotX = 0;
+  lastX = 0;
+  lastY = 0;
+  lastZ = 0;
+  var container_width = $('#container').width();
+  var container_height = $('#container').height();
+  var container_max = container_width > container_height ? container_width : container_height;
+  var cube_size = $('.side').width();
+  camZ = Math.floor(container_max*5/8);
+  if (container_max-cube_size > 0) { camZ += Math.floor((container_max-cube_size)/4); }
   $('#controller')
-    .css('transform', '1000px');
+    .css('transform', '2000px');
   $('#container')
     .css('transform-style', 'preserve-3d')
-    .css('perspective', '200');
+    .css('perspective', camZ);
   $('#cube')
     .css('transform-style', 'preserve-3d')
-    .css('transform', 'translateZ(200px)');
+    .css('transform', 'translateZ('+camZ+'px)');
   $('.side')
-    .css('backface-visibility', 'hidden');
+    .css('backface-visibility', 'hidden')
+    .css('left', Math.floor((container_width-cube_size)/2))
+    .css('top', Math.floor((container_height-cube_size)/2));
   $('#loading')
     .css('border-radius', '8px');
 }
 
-function copyImage(dst, transform)
+function buildCube()
 {
-  $(dst).css('transform', transform);
+  var z = Math.floor($('.side').width()/2)-1;
+  var translate_z = 'translateZ(-'+z+'px)';
+  $("#side1").css('transform', translate_z);
+  $("#side2").css('transform', 'rotateY(-90deg) ' + translate_z);
+  $("#side3").css('transform', 'rotateY(180deg) ' + translate_z);
+  $("#side4").css('transform', 'rotateY(90deg) ' + translate_z);
+  $("#side5").css('transform', 'rotateX(-90deg) ' + translate_z);
+  $("#side6").css('transform', 'rotateX(90deg) ' + translate_z);
 }
 
 function startDrag(e)

@@ -40,19 +40,16 @@ end %>
 <%
   when 'css', 'css_touch'
 %>
-<div class="css3_3d_transform">
+<div class="css3_3d_transform <%= @view=='css' ? 'mouse' : 'touch' %>">
   <div class="body">
     <div id="container">
       <div id="cube">
-        <img id="side1" class="side" src="/views/forest1.jpg" />
-        <img id="side2" class="side" src="/views/forest2.jpg" />
-        <img id="side3" class="side" src="/views/forest3.jpg" />
-        <img id="side4" class="side" src="/views/forest4.jpg" />
-        <img id="side5" class="side" src="/views/forest5.jpg" />
-        <img id="side6" class="side" src="/views/forest6.jpg" />
+        <% (1..6).each do |i| %>
+        <img id="side<%= i.to_s %>" class="side" src="/views/forest<%= i.to_s %>.jpg" width="640" height="640" />
+        <% end %>
       </div>
     </div>
-    <canvas id="controller">&nbsp;</canvas>
+    <div id="controller">&nbsp;</div>
     <div id="loading">loading...<br />please wait</div>
   </div>
   <p class="menu"><%= check_box_tag 'rotation','rotation', false, :onclick=>"rotation_check();" %><%= label_tag 'rotation', '自動で横回転する'  %></p>

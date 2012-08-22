@@ -30,21 +30,21 @@ body {
     margin: 0;
 }
 
+.css3_3d_transform {
+    position: relative;
+    margin: 0;
+}
 
 /* the controller listens to the touch events */
 #controller {
     position: absolute;
     z-index: 100;
-    width: 320px;
-    height: 320px;
     top: 0px;
     left: 0px;
 }
 
 /* the 3-D view */
 #container {
-    width: 320px;
-    height: 320px;
     overflow: hidden;
     position: absolute;
     top: 0px;
@@ -52,7 +52,18 @@ body {
 }
 
 /* a coord system for grouping all sides together */
-#cube {
+.css3_3d_transform.mouse #controller,
+.css3_3d_transform.mouse #container,
+.css3_3d_transform.mouse #cube,
+.css3_3d_transform.mouse .body {
+    width: 640px;
+    height: 480px;
+}
+
+.css3_3d_transform.touch #controller,
+.css3_3d_transform.touch #container,
+.css3_3d_transform.touch #cube,
+.css3_3d_transform.touch .body {
     width: 320px;
     height: 320px;
 }
@@ -64,11 +75,7 @@ body {
 
 /* cube side */
 .side {
-    width: 283px;
-    height: 283px;
     position: absolute;
-    left: 18px; /* 18px centres a 283-pixel-wide image in a 320-pixel-wide container */
-    top: 18px;  /* 18px vertically centres the 283-pixel-tall image in a 320-pixel-tall container */
 }
 
 #loading {
@@ -89,13 +96,7 @@ body {
   visibility: hidden;
 }
 
-.css3_3d_transform {
-    margin: 0;
-}
-
 .body {
-    height: 320px;
-    width: 320px;
     position: relative;
 }
 
