@@ -96,6 +96,10 @@ body {
   visibility: hidden;
 }
 
+.ui-mobile.landscape {
+  min-height: 268px;
+}
+
 .body {
     position: relative;
 }
@@ -103,4 +107,29 @@ body {
 .menu {
     width: 300px;
     margin-left: 8px;
+}
+
+.menu.css_touch {
+    margin: 5px 0 5px 8px;
+}
+
+.landscape .css3_3d_transform.touch .menu,
+.landscape .menu.css_touch {
+    position: absolute;
+    width: 195px;
+}
+
+.landscape .css3_3d_transform.touch .menu {
+    top: -20px;
+    right: 5px;
+}
+
+.landscape .menu.css_touch {
+    top: 50px;
+    right: 5px;
+}
+
+.menu.css_touch .social_bookmark,
+.menu.css_touch .top {
+    width: 50px;
 }
