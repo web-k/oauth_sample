@@ -25,9 +25,18 @@ class AuthenticationController < ApplicationController
     # twitter.comで認証する
     redirect_to request_token.authorize_url
     return
+  rescue => e
+    flash[:notice] = "Error: " + e.request.code
+    logger.debug "Status code: " + e.request.code
+    logger.debug "Response body: " + e.request.body
+    redirect_to root_path
   end
  
   def oauth_callback
+    if params[:denied].present?
+      redirect_to root_path
+      return
+    end
     consumer = AuthenticationController.consumer
     request_token = OAuth::RequestToken.new(
       consumer,
@@ -60,7 +69,7 @@ class AuthenticationController < ApplicationController
       session['access_token_secret'] = access_token.secret
       redirect_to root_path
     else
-      RAILS_DEFAULT_LOGGER.error "Failed to get user info via OAuth"
+      logger.error "Failed to get user info via OAuth"
       flash[:notice] = "Authentication failed"
       redirect_to :action => :index
       return
