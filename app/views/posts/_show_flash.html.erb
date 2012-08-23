@@ -1,0 +1,75 @@
+        <!-- SWFObject's dynamic embed method replaces this alternative HTML content with Flash content when enough 
+             JavaScript and Flash plug-in support is available. The div is initially hidden so that it doesn't show
+             when JavaScript is disabled.
+        -->
+        <div id="flashContent">
+            <p>
+                To view this page ensure that Adobe Flash Player version 
+                11.1.0 or greater is installed. 
+            </p>
+            <script type="text/javascript"> 
+                var pageHost = ((document.location.protocol == "https:") ? "https://" : "http://"); 
+                document.write("<a href='http://www.adobe.com/go/getflashplayer'><img src='" 
+                                + pageHost + "www.adobe.com/images/shared/download_buttons/get_flash_player.gif' alt='Get Adobe Flash player' /></a>" ); 
+            </script> 
+        </div>
+        
+        <noscript>
+            <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="100%" height="100%" id="Flash3dApplet">
+                <param name="movie" value="/flash/Flash3dApplet.swf" />
+                <param name="quality" value="high" />
+                <param name="bgcolor" value="#ffffff" />
+                <param name="allowScriptAccess" value="always" />
+                <param name="allowFullScreen" value="true" />
+                <!--[if !IE]>-->
+                <object type="application/x-shockwave-flash" data="/flash/Flash3dApplet.swf" width="100%" height="100%">
+                    <param name="quality" value="high" />
+                    <param name="bgcolor" value="#ffffff" />
+                    <param name="allowScriptAccess" value="always" />
+                    <param name="allowFullScreen" value="true" />
+                <!--<![endif]-->
+                <!--[if gte IE 6]>-->
+                    <p> 
+                        Either scripts and active content are not permitted to run or Adobe Flash Player version
+                        11.1.0 or greater is not installed.
+                    </p>
+                <!--<![endif]-->
+                    <a href="http://www.adobe.com/go/getflashplayer">
+                        <img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Get Adobe Flash Player" />
+                    </a>
+                <!--[if !IE]>-->
+                </object>
+                <!--<![endif]-->
+            </object>
+        </noscript>
+        <div>
+	     <input type="text" id="urlText" maxLength="256" size="100" value="/views/forest.jpg"/>
+    	    <input type="button" id="loadButton" value="load" onclick="loadImage();"/>
+        </div>
+        <div>
+        	<input type="button" id="enableRemoveButton" value="enableRemoveButton" onclick="enableRemoveViewPoint(true);"/>
+        	<input type="button" id="disableeRemoveButton" value="disableRemoveButton" onclick="enableRemoveViewPoint(false);"/>
+        </div>
+        <div>
+        	<input type="button" id="enableWheelButton" value="enableFlashMouseWheel" onclick="enableWheelControl(true);"/>
+        	<input type="button" id="disableWheelButton" value="disableFlashMouseWheel" onclick="enableWheelControl(false);"/>
+        </div>
+        <div>
+        	<input type="button" id="enableAddViewPoint" value="enableAddButton" onclick="enableAddViewPoint(true);"/>
+        	<input type="button" id="enableAddViewPoint" value="disableAddButton" onclick="enableAddViewPoint(false);"/>
+        </div>
+         <div>
+        	<input type="text" id="mouseWheelDeltaText" value="3" maxLength="4" size="10"/>
+        	<input type="button" id="wheelButton" value="Wheel" onclick="doWheelDelta();"/>
+        </div>
+		<div>
+        	<input type="text" id="addViewPointNameText" value="0" maxLength="10" size="10"/>
+        	<input type="text" id="addViewPointHText" value="0" maxLength="4" size="5"/>
+        	<input type="text" id="addViewPointVText" value="0" maxLength="4" size="5"/>
+        	<input type="text" id="addViewPointAngleHText" value="0" maxLength="4" size="5"/>
+        	<input type="button" id="addViewPointButton" value="AddViewPoint" onclick="addViewPoint();"/>
+        </div>
+        <div>
+           	<input type="text" id="removeViewPointNameText" value="0" maxLength="10" size="10"/>
+        	<input type="button" id="removeViewPointButton" value="RemoveViewPoint" onclick="removeViewPoint();"/>
+        </div>

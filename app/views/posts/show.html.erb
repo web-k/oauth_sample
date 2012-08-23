@@ -12,6 +12,17 @@
   <%= javascript_include_tag "jquery.mobile-1.1.1.min" %>
   <%= javascript_include_tag "css_3d_touch" %>
 <%
+  when 'flash' %>
+  <meta name="google" value="notranslate" />
+  <!-- Enable Browser History by replacing useBrowserHistory tokens with two hyphens -->
+  <!-- BEGIN Browser History required section -->
+  <link rel="stylesheet" type="text/css" href="/flash/history/history.css" />
+  <script type="text/javascript" src="/flash/history/history.js"></script>
+  <!-- END Browser History required section -->  
+  <%= javascript_include_tag "swfobject.js" %>
+  <%= stylesheet_link_tag   "css_3d_flash" %>
+  <%= javascript_include_tag "css_3d_flash" %>
+<%
   end
 end %>
 <%# facebook %>
@@ -32,10 +43,7 @@ end %>
   when 'flash'
 %>
 <div class="alternative3d">
-  <div class="media"><script type="text/javascript" src="/views/inject.js"><![CDATA[
-]]></script></div>
-  <div class="copy"><p>Equirectangular panorama with ActionScript(Alternativa3D).</p>
-  <p><a href="https://github.com/suzumura-ss/flash_sphere_panorama">https://github.com/suzumura-ss/flash_sphere_panorama</a></p></div>
+<%= render partial: 'show_flash' %>
 </div>
 <%
   when 'css', 'css_touch'
