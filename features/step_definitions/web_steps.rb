@@ -75,6 +75,10 @@ end
   attach_file(field, File.expand_path(path))
 end
 
+もし /^"([^"]*)"時のスクリーンショットを撮る$/ do |screenshot_name|
+  page.driver.render screenshot_name+'.png'
+end
+
 ならば /^"([^"]*)"と表示されていること$/ do |text|
   if page.respond_to? :should
     page.should have_content(text)
