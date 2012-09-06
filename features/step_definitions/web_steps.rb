@@ -173,3 +173,7 @@ show_me_the_page = lambda { ならば %{ページを表示する} }
 # backword-compat for old japanese translation.
 ならば /^デバッグ(?:のため)?$/, &show_me_the_page
 
+ならば /^"(.*?)"リンクがあること$/ do |text|
+  find_link(text).visible?
+end
+
