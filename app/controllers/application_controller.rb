@@ -2,9 +2,14 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
   before_filter :check_user_agent
   before_filter :check_request_headers
+  before_filter :ua_logging
   
   include ApplicationHelper
   
+  def ua_logging
+    logger.info('  UA: ' + request.env['HTTP_USER_AGENT'].inspect)
+  end
+
   def check_user_agent
     if @user_agent.blank?
       user_agent = user_agent(request)
