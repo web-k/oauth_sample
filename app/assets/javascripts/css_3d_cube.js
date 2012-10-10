@@ -34,6 +34,7 @@ var lastX;
 var lastY;
 var lastZ;
 var $controller;
+var is_css_transition_supported = false;
 
 function build_texture()
 {
@@ -68,6 +69,8 @@ function initCss3dStyle()
     .css('top', Math.floor((container_height-cube_size)/2));
   $('#loading')
     .css('border-radius', '8px');
+  var p = navigator.platform;
+  if (p.indexOf( "iPhone" ) > -1 || p.indexOf( "iPad" ) > -1  || p.indexOf( "iPod" ) > -1 ) { is_css_transition_supported = true; }
 }
 
 function buildCube()
@@ -136,14 +139,18 @@ function doRotate(lastX, lastY, curX, curY, wheelDelta, animate)
   rotX = Math.max(-88, Math.min(88, rotX));
   camZ += wheelDelta;
 
+  if (!is_css_transition_supported && wheelDelta != 0) { $c.remove(); }
   var transform_style = "translateZ(" + Math.floor(camZ) + "px) rotateX(" + Math.floor(rotX) + "deg) rotateY(" + Math.floor(rotY) + "deg)";
-  if (animate) {
-    $e.css("transition", "all 1s").css("transform", transform_style);
-    $c.css("transition", "all 1s").css("perspective", Math.floor(camZ) +'px');
-  } else {
-    $e.css("transition", "none").css('transform', transform_style);
-    $c.css("transition", "none").css('perspective', Math.floor(camZ) +'px');
+  if (animate && is_css_transition_supported) {
+    $e.css("transition", "all 1s");
+    $c.css("transition", "all 1s");
+  } else if (is_css_transition_supported) {
+    $e.css("transition", "none");
+    $c.css("transition", "none");
   }
+  $e.css("transform", transform_style);
+  $c.css("perspective", Math.floor(camZ) +'px');
+  if (!is_css_transition_supported && wheelDelta != 0) { $(".css3_3d_transform .body").prepend($c); }
 }
 
 function hideUrlBar()
@@ -187,12 +194,13 @@ function tap(e)
 {
   if (!in_area(e.pageX, e.pageY)) { return; }
   var delta = tapZoomDelta;
+  var animate = is_css_transition_supported;
   if (tapZoomLevel == tapZoomLevelMax) {
     delta = delta * tapZoomLevel * -1;
-    doRotate(0,0,0,0,delta,true);
+    doRotate(0,0,0,0,delta,animate);
     tapZoomLevel = 0;
   } else {
-    doRotate(0,0,0,0,delta,true);
+    doRotate(0,0,0,0,delta,animate);
     tapZoomLevel += 1;
   }
   return false;
