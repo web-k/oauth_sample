@@ -124,8 +124,9 @@ function in_area(x,y)
   return ((c_x<=x && x<=c_x+c_w) && (c_y<=y && y<=c_y+c_h))
 }
 
-function doRotate(lastX, lastY, curX, curY, wheelDelta)
+function doRotate(lastX, lastY, curX, curY, wheelDelta, animate)
 {
+  if (typeof animate === 'undefined') { animate = false; }
   var $e = $('#cube');
   var $c = $('#container');
   if ($e.size()==0) { return; }
@@ -136,8 +137,13 @@ function doRotate(lastX, lastY, curX, curY, wheelDelta)
   camZ += wheelDelta;
 
   var transform_style = "translateZ(" + Math.floor(camZ) + "px) rotateX(" + Math.floor(rotX) + "deg) rotateY(" + Math.floor(rotY) + "deg)";
-  $e.css('transform', transform_style);
-  $c.css('perspective', Math.floor(camZ) +'px');
+  if (animate) {
+    $e.css("transition", "all 1s").css("transform", transform_style);
+    $c.css("transition", "all 1s").css("perspective", Math.floor(camZ) +'px');
+  } else {
+    $e.css("transition", "none").css('transform', transform_style);
+    $c.css("transition", "none").css('perspective', Math.floor(camZ) +'px');
+  }
 }
 
 function hideUrlBar()
@@ -172,4 +178,22 @@ function rotation_check()
   }else{
     clearTimeout(autoRotationTimeoutID);
   }
+}
+
+var tapZoomLevel = 0;
+var tapZoomLevelMax = 2;
+var tapZoomDelta = 150;
+function tap(e)
+{
+  if (!in_area(e.pageX, e.pageY)) { return; }
+  var delta = tapZoomDelta;
+  if (tapZoomLevel == tapZoomLevelMax) {
+    delta = delta * tapZoomLevel * -1;
+    doRotate(0,0,0,0,delta,true);
+    tapZoomLevel = 0;
+  } else {
+    doRotate(0,0,0,0,delta,true);
+    tapZoomLevel += 1;
+  }
+  return false;
 }

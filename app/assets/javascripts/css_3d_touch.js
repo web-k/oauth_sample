@@ -13,6 +13,7 @@ function init()
   $controller.on("vmousemove", moveDrag);
   $controller.on("vmouseup", endDrag);
   $controller.on("vmouseout", endDrag);
+  $controller.on("tap", tap);
 
   var $document = $(document);
   $document.on("mousewheel", moveWheel);
@@ -20,6 +21,7 @@ function init()
   $document.on("vmousemove", moveDrag);
   $document.on("vmouseup", endDrag);
   $document.on("vmouseout", endDrag);
+  $document.on("tap", tap);
   
   if(checksupport()) {
     $("#loading").remove();
