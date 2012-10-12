@@ -14,6 +14,7 @@ function init()
   $controller.on("vmouseup", endDrag);
   $controller.on("vmouseout", endDrag);
   $controller.on("tap", tap);
+  $controller.on("pinch",pinch);
 
   var $document = $(document);
   $document.on("mousewheel", moveWheel);
@@ -22,6 +23,7 @@ function init()
   $document.on("vmouseup", endDrag);
   $document.on("vmouseout", endDrag);
   $document.on("tap", tap);
+  $document.on("pinch", pinch);
   
   if(checksupport()) {
     $("#loading").remove();
@@ -61,3 +63,4 @@ function set_layout()
   setTimeout(scrollTo, 100, 0, 1); //hide url bar
   build_texture();
 }
+

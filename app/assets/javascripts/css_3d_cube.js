@@ -205,3 +205,9 @@ function tap(e)
   }
   return false;
 }
+
+var pinchZoomRatio =2;
+function pinch(event, property) {
+  doRotate(0,0,0,0,parseInt(property.description.split(":")[1])*pinchZoomRatio);
+  return false;
+}
