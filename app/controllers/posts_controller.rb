@@ -17,6 +17,8 @@ class PostsController < ApplicationController
       'css'
     when 'flash'
       'flash'
+    when 'webgl'
+      'webgl'
     else
       nil
     end
@@ -32,6 +34,8 @@ class PostsController < ApplicationController
       'css'
     when 'flash'
       'flash'
+    when 'webgl'
+      'webgl'
     else
       ios? ? 'css_touch' : 'flash'
     end
