@@ -27,6 +27,7 @@ class PostsController < ApplicationController
   end
 
   def show
+    @id = params[:id].to_i
     @view = case params[:view]
     when 'css_touch'
       'css_touch'
