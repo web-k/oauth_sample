@@ -65,7 +65,7 @@ end %>
     <div id="container">
       <div id="cube">
         <% (1..6).each do |i| %>
-        <img id="side<%= i.to_s %>" class="side" src="/views/forest<%= i.to_s + (@id==2 ? '_l' : '') %>.jpg" width="640" height="640" />
+        <img id="side<%= i.to_s %>" class="side" src="/views/<%= @id==3 ? 'cubic' : 'forest' %><%= i.to_s + (@id==2 ? '_l' : '') %>.<%= @id==3 ? 'png' : 'jpg' %>" width="640" height="640" />
         <% end %>
       </div>
     </div>
