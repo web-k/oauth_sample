@@ -25,6 +25,14 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
 
+var drag_speedX = 0.0;  // px per sec
+var drag_speedY = 0.0;  // px per sec
+var drag_status = 'not drag';
+var drag_moving_attenuation_fps = 60;
+var drag_moving_attenuation_interval = 1000/drag_moving_attenuation_fps; // msec
+var drag_current_time;
+var drag_last_time;
+var drag_second_last_time;
 var rotY = 0;
 var rotX = 0;
 var camZ;
@@ -33,6 +41,8 @@ var active = 0;
 var lastX;
 var lastY;
 var lastZ;
+var second_lastX;
+var second_lastY;
 var $controller;
 var is_css_transition_supported = false;
 
@@ -90,8 +100,13 @@ function startDrag(e)
   if (!in_area(e.pageX, e.pageY)) { return; }
   e.preventDefault();
   active = "mouse";
+  drag_status = 'drag';
   lastX = e.pageX;
   lastY = e.pageY;
+  drag_lastX = lastX;
+  drag_lastY = lastY;
+  drag_speedX = 0.0;
+  drag_speedY = 0.0;
 }
 
 function moveDrag(e)
@@ -100,16 +115,33 @@ function moveDrag(e)
   e.preventDefault();
   if(active) {
     doRotate(lastX, lastY, e.pageX, e.pageY, 0);
+    second_lastX = lastX;
+    second_lastY = lastY;
+    drag_second_last_time = drag_last_time;
     lastX = e.pageX;
     lastY = e.pageY;
+    drag_last_time = (new Date()).getTime();
   }
 }
 
 function endDrag(e)
 {
+  drag_current_time = (new Date()).getTime();
   if (!in_area(e.pageX, e.pageY)) { return; }
   e.preventDefault();
   active = 0;
+  if (drag_status != 'moving') {
+    var drag_time = drag_current_time - drag_second_last_time;
+    if (drag_time > 0 && drag_time <= 100) {
+      drag_speedX = (e.pageX - second_lastX)*0.4/drag_time;
+      drag_speedY = (e.pageY - second_lastY)*0.4/drag_time;
+      drag_status = 'moving';
+      movingDrag();
+    } else {
+      drag_speedX = 0;
+      drag_speedY = 0;
+    }
+  }
 }
 
 function moveWheel(e, d)
@@ -118,13 +150,31 @@ function moveWheel(e, d)
   doRotate(0, 0, 0, 0, d);
 }
 
+function movingDrag() {
+  if (drag_status != 'moving') { return; }
+  drag_speedX *= 0.96;
+  drag_speedY *= 0.96;
+  var deltaX = drag_speedX*drag_moving_attenuation_interval;
+  var deltaY = drag_speedY*drag_moving_attenuation_interval;
+  var targetX = lastX + deltaX;
+  var targetY = lastY + deltaY;
+  doRotate(lastX, lastY, targetX, targetY, 0);
+  lastX = targetX;
+  lastY = targetY;
+  if(Math.abs(drag_speedX) > 0.004 || Math.abs(drag_speedY) > 0.004) {
+    setTimeout(function(){movingDrag();}, drag_moving_attenuation_interval);
+  } else {
+    drag_status = 'not drag';
+  }
+}
+
 function in_area(x,y)
 {
   var c_x = $controller.offset().left;
   var c_y = $controller.offset().top;
   var c_w = $controller.width();
   var c_h = $controller.height();
-  return ((c_x<=x && x<=c_x+c_w) && (c_y<=y && y<=c_y+c_h))
+  return ((c_x<=x && x<=c_x+c_w) && (c_y<=y && y<=c_y+c_h));
 }
 
 function doRotate(lastX, lastY, curX, curY, wheelDelta, animate)
@@ -140,7 +190,7 @@ function doRotate(lastX, lastY, curX, curY, wheelDelta, animate)
   camZ += wheelDelta;
 
   if (!is_css_transition_supported && wheelDelta != 0) { $c.remove(); }
-  var transform_style = "translateZ(" + Math.floor(camZ) + "px) rotateX(" + Math.floor(rotX) + "deg) rotateY(" + Math.floor(rotY) + "deg)";
+  var transform_style = "translateZ(" + Math.floor(camZ) + "px) rotateX(" + rotX + "deg) rotateY(" + rotY + "deg)";
   if (animate && is_css_transition_supported) {
     $e.css("transition", "all 1s");
     $c.css("transition", "all 1s");
@@ -193,6 +243,7 @@ var tapZoomDelta = 150;
 function tap(e)
 {
   if (!in_area(e.pageX, e.pageY)) { return; }
+  drag_status = 'not drag';
   var delta = tapZoomDelta;
   var animate = is_css_transition_supported;
   if (tapZoomLevel == tapZoomLevelMax) {
