@@ -32,7 +32,6 @@ var drag_moving_attenuation_fps = 60;
 var drag_moving_attenuation_interval = 1000/drag_moving_attenuation_fps; // msec
 var drag_current_time;
 var drag_last_time;
-var drag_second_last_time;
 var rotY = 0;
 var rotX = 0;
 var camZ;
@@ -41,8 +40,8 @@ var active = 0;
 var lastX;
 var lastY;
 var lastZ;
-var second_lastX;
-var second_lastY;
+var drag_history_length = 30;
+var drag_history = new Array(drag_history_length);
 var $controller;
 var is_css_transition_supported = false;
 
@@ -95,6 +94,33 @@ function buildCube()
   $("#side6").css('transform', 'rotateX(90deg) ' + translate_z);
 }
 
+function pushDragHistory(x,y,time) {
+  var history = {
+    x: x,
+    y: y,
+    time: time
+  };
+  for (var i=drag_history_length-2; i>=0; i--) {
+    drag_history[i+1] = drag_history[i];
+  }
+  drag_history[0] = history;
+}
+function popProperDragHistory() {
+  var current_time = (new Date()).getTime();
+  var proper_drag_history = null;
+  for (var i=0; i<drag_history_length; i++) {
+    var h = drag_history[i];
+    if (!h) { break; }
+    var drag_time = current_time - h.time;
+    if (drag_time>100) { break; }
+    proper_drag_history = h;
+  }
+  return proper_drag_history;
+}
+function clearDragHistory() {
+  drag_history = new Array(drag_history_length);
+}
+
 function startDrag(e)
 {
   if (!in_area(e.pageX, e.pageY)) { return; }
@@ -107,6 +133,7 @@ function startDrag(e)
   drag_lastY = lastY;
   drag_speedX = 0.0;
   drag_speedY = 0.0;
+  clearDragHistory();
 }
 
 function moveDrag(e)
@@ -115,9 +142,7 @@ function moveDrag(e)
   e.preventDefault();
   if(active) {
     doRotate(lastX, lastY, e.pageX, e.pageY, 0);
-    second_lastX = lastX;
-    second_lastY = lastY;
-    drag_second_last_time = drag_last_time;
+    pushDragHistory(lastX, lastY, drag_last_time);
     lastX = e.pageX;
     lastY = e.pageY;
     drag_last_time = (new Date()).getTime();
@@ -131,10 +156,11 @@ function endDrag(e)
   e.preventDefault();
   active = 0;
   if (drag_status != 'moving') {
-    var drag_time = drag_current_time - drag_second_last_time;
-    if (drag_time > 0 && drag_time <= 100) {
-      drag_speedX = (e.pageX - second_lastX)*0.4/drag_time;
-      drag_speedY = (e.pageY - second_lastY)*0.4/drag_time;
+    var drag_history = popProperDragHistory();
+    if (drag_history != null) {
+      var drag_time = drag_current_time - drag_history.time;
+      drag_speedX = (e.pageX - drag_history.x)*0.4/drag_time;
+      drag_speedY = (e.pageY - drag_history.y)*0.4/drag_time;
       drag_status = 'moving';
       movingDrag();
     } else {
@@ -154,14 +180,14 @@ function movingDrag() {
   if (drag_status != 'moving') { return; }
   drag_speedX *= 0.96;
   drag_speedY *= 0.96;
-  var deltaX = drag_speedX*drag_moving_attenuation_interval;
-  var deltaY = drag_speedY*drag_moving_attenuation_interval;
-  var targetX = lastX + deltaX;
-  var targetY = lastY + deltaY;
-  doRotate(lastX, lastY, targetX, targetY, 0);
-  lastX = targetX;
-  lastY = targetY;
   if(Math.abs(drag_speedX) > 0.004 || Math.abs(drag_speedY) > 0.004) {
+    var deltaX = drag_speedX*drag_moving_attenuation_interval;
+    var deltaY = drag_speedY*drag_moving_attenuation_interval;
+    var targetX = lastX + deltaX;
+    var targetY = lastY + deltaY;
+    doRotate(lastX, lastY, targetX, targetY, 0);
+    lastX = targetX;
+    lastY = targetY;
     setTimeout(function(){movingDrag();}, drag_moving_attenuation_interval);
   } else {
     drag_status = 'not drag';
