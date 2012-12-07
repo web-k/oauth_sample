@@ -145,13 +145,13 @@ function moveDrag(e)
     pushDragHistory(lastX, lastY, drag_last_time);
     lastX = e.pageX;
     lastY = e.pageY;
-    drag_last_time = (new Date()).getTime();
+    drag_last_time = e.timeStamp;
   }
 }
 
 function endDrag(e)
 {
-  drag_current_time = (new Date()).getTime();
+  drag_current_time = e.timeStamp;
   if (!in_area(e.pageX, e.pageY)) { return; }
   e.preventDefault();
   active = 0;
