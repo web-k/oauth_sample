@@ -159,8 +159,8 @@ function endDrag(e)
     var drag_history = popProperDragHistory();
     if (drag_history != null) {
       var drag_time = drag_current_time - drag_history.time;
-      drag_speedX = (e.pageX - drag_history.x)*0.4/drag_time;
-      drag_speedY = (e.pageY - drag_history.y)*0.4/drag_time;
+      drag_speedX = (e.pageX - drag_history.x)*0.5/drag_time;
+      drag_speedY = (e.pageY - drag_history.y)*0.5/drag_time;
       drag_status = 'moving';
       movingDrag();
     } else {
