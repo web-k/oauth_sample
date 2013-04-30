@@ -1,4 +1,5 @@
 source 'https://rubygems.org'
+ruby '2.0.0'
 
 gem 'rails'
 
@@ -34,11 +35,10 @@ gem 'jquery-rails'
 
 group :development, :test do
   gem 'capybara'
-  gem 'capybara-webkit'
+  gem 'poltergeist'
   gem 'cucumber'
   gem 'cucumber-rails', require: false
   gem 'database_cleaner'
-  gem 'headless'
 end
 
 # To use ActiveModel has_secure_password
