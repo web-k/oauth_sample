@@ -15,6 +15,7 @@ gem 'twitter'
 gem 'json'
 
 gem 'execjs'
+gem 'libv8'
 gem 'therubyracer'
 
 gem 'oauth2'
@@ -56,12 +57,8 @@ end
 # To use debugger
 # gem 'debugger'
 
-gem 'execjs'
-gem 'therubyracer'
-
 gem 'heroku'
 
 group :production do
   gem 'pg'
-  gem 'therubyracer-heroku', '0.8.1.pre3'
 end
