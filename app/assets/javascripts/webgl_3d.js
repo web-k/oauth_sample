@@ -38,8 +38,7 @@ function init()
   } 
 
   var l = $("#loading");
-  if(checksupport()) {
-    init_panorama();
+  //init_panorama();
 
   $controller = $("#controller");
   $controller.on("mousewheel", moveWheel);
@@ -48,22 +47,18 @@ function init()
   $controller.on("vmouseup", endDrag);
   $controller.on("vmouseout", endDrag);
 
-  var $document = $(document);
-  $document.on("mousewheel", moveWheel);
-  $document.on("vmousedown", startDrag);
-  $document.on("vmousemove", moveDrag);
-  $document.on("vmouseup", endDrag);
-  $document.on("vmouseout", endDrag);
+  //var $document = $(document);
+  //$document.on("mousewheel", moveWheel);
+  //$document.on("vmousedown", startDrag);
+  //$document.on("vmousemove", moveDrag);
+  //$document.on("vmouseup", endDrag);
+  //$document.on("vmouseout", endDrag);
 
-    l.remove();
-    doRotate(0, 0, 0, 0, 0);
+  l.remove();
 
-    set_layout();
-    $(window).bind("resize", set_layout);
-  } else {
-    l.text("WebGL is not supported.");
-    return;
-  }
+  set_layout();
+  doRotate(0, 0, 0, 0, 0);
+  $(window).bind("resize", set_layout);
 }
 
 function set_layout()
