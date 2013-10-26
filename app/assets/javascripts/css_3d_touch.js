@@ -29,7 +29,8 @@ function controll_on() {
   $controller.on("vmousemove", moveDrag);
   $controller.on("vmouseup", endDrag);
   $controller.on("vmouseout", endDrag);
-  $controller.on("tap", tap);
+  $controller.hammer().on('pinch touch release', pinch);
+
 
   var $document = $(document);
   $document.on("mousewheel", moveWheel);
@@ -37,7 +38,7 @@ function controll_on() {
   $document.on("vmousemove", moveDrag);
   $document.on("vmouseup", endDrag);
   $document.on("vmouseout", endDrag);
-  $document.on("tap", tap);
+  $document.hammer().on('pinch touch release', pinch);
 }
 
 function resize_css_3d() {

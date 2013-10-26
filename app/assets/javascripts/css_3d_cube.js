@@ -44,6 +44,9 @@ var drag_history_length = 30;
 var drag_history = new Array(drag_history_length);
 var $controller;
 var is_css_transition_supported = false;
+var isPinch = false;
+var camZ_max = 1000;
+var camZ_min = 100;
 
 function build_texture()
 {
@@ -63,6 +66,8 @@ function initCss3dStyle()
   var container_max = container_width > container_height ? container_width : container_height;
   var cube_size = $('.side').width();
   camZ = Math.floor(container_max*5/8);
+  camZ_min = camZ / 2;
+  camZ_max = camZ * 3;
   if (container_max-cube_size > 0) { camZ += Math.floor((container_max-cube_size)/4); }
   $('#controller')
     .css('transform', '2000px');
@@ -123,7 +128,7 @@ function clearDragHistory() {
 
 function startDrag(e)
 {
-  if (!in_area(e.pageX, e.pageY)) { return; }
+  if (!in_area(e.pageX, e.pageY) || isPinch) { return; }
   e.preventDefault();
   active = "mouse";
   drag_status = 'drag';
@@ -138,7 +143,7 @@ function startDrag(e)
 
 function moveDrag(e)
 {
-  if (!in_area(e.pageX, e.pageY)) { return; }
+  if (!in_area(e.pageX, e.pageY) || isPinch) { return; }
   e.preventDefault();
   if(active) {
     doRotate(lastX, lastY, e.pageX, e.pageY, 0);
@@ -152,7 +157,7 @@ function moveDrag(e)
 function endDrag(e)
 {
   drag_current_time = e.timeStamp;
-  if (!in_area(e.pageX, e.pageY)) { return; }
+  if (!in_area(e.pageX, e.pageY) || isPinch) { return; }
   e.preventDefault();
   active = 0;
   if (drag_status != 'moving') {
@@ -214,6 +219,8 @@ function doRotate(lastX, lastY, curX, curY, wheelDelta, animate)
   rotX += (curY - lastY) * 0.25;
   rotX = Math.max(-88, Math.min(88, rotX));
   camZ += wheelDelta;
+  if (camZ > camZ_max) { camZ = camZ_max; }
+  if (camZ < camZ_min) { camZ = camZ_min; }
 
   if (!is_css_transition_supported && wheelDelta != 0) { $c.remove(); }
   var transform_style = "translateZ(" + Math.floor(camZ) + "px) rotateX(" + rotX + "deg) rotateY(" + rotY + "deg)";
@@ -281,4 +288,24 @@ function tap(e)
     tapZoomLevel += 1;
   }
   return false;
+}
+
+var scaleDelta = 400;
+var lastScale = 1;
+function pinch(e)
+{
+  switch(e.type) {
+    case 'touch':
+      lastScale = 1;
+      return;
+    case 'release':
+      isPinch = false;
+      lastScale = 1;
+      return;
+  }
+  isPinch = true;
+  if (lastScale == e.gesture.scale) { return; }
+  var delta = scaleDelta * (e.gesture.scale - lastScale);
+  lastScale = e.gesture.scale;
+  doRotate(0,0,0,0,delta,false);
 }
