@@ -81,7 +81,13 @@ end %>
     <%# twitter %>
     <li class="twitter"><a href="http://twitter.com/share" class="twitter-share-button" data-count="horizontal" data-lang="ja">Tweet</a><script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script></li>
     <%# facebook %>
-    <li class="facebook"><div class="fb-like" data-href="<%= url_for(controller: 'posts', action: 'show', view: @view, only_path: false) %>" data-send="false" data-layout="button_count" data-width="100" data-show-faces="true"></div></li>
+    <li class="facebook"><div class="fb-like" data-href="<%= url_for(controller: 'posts', action: 'show', view: @view, only_path: false) %>" data-send="false" data-layout="button_count" data-width="100" data-show-faces="true" data-share="true"></div></li>
+    <li class="line"><span>
+<script type="text/javascript" src="//media.line.me/js/line-button.js?v=20140127" ></script>
+<script type="text/javascript">
+new media_line_me.LineButton({"pc":false,"lang":"ja","type":"a","text":"テストテキスト","withUrl":true});
+</script>
+</span></li>
   </ul>
   <p class="top"><%= link_to 'Top', root_path %></p>
 </div>
