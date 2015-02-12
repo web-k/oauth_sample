@@ -16,6 +16,11 @@ var textureSource = null;
 var textureSample = null, textureSampleCtx = null;
 var tex;
 
+var camZ_max = 1000;
+var camZ_min = 100;
+var camZ_max_webGL = 100;
+var camZ_min_webGL = 0;
+
 $(init);
 
 function init()
@@ -89,6 +94,7 @@ function set_layout()
   init_panorama();
 }
 
+var segmentNumber = 80;
 function init_panorama()
 {
   container = $("#container");
@@ -97,27 +103,35 @@ function init_panorama()
 
   scene = new THREE.Scene();
 
-  tex = new THREE.Texture((textureSample||textureSource)[0]);
+  tex = new THREE.ImageUtils.loadTexture($("#texture").attr("src"));
   tex.minFilter = THREE.LinearFilter;
   tex.magFilter = THREE.LinearFilter;
-  mesh = new THREE.Mesh( new THREE.SphereGeometry( 200, 20, 20 ), new THREE.MeshBasicMaterial( { map: tex, overdraw: true } ) );
-  mesh.doubleSided = false;
-  mesh.flipSided = true;
+
+  var sphereGeometry = new THREE.SphereGeometry( 100, segmentNumber, segmentNumber);
+  var matrix = new THREE.Matrix4().makeScale(1, 1, -1);
+  sphereGeometry.applyMatrix(matrix);
+  sphereGeometry.applyMatrix(new THREE.Matrix4().makeRotationY(90 * Math.PI/180.0));
+
+  mesh = new THREE.Mesh(sphereGeometry , new THREE.MeshBasicMaterial( { map: tex, overdraw: true } ) );
   scene.add( mesh );
 
+  var container_max = width > height ? width : height;
+  camZ = Math.floor(container_max*0.13)-73.33;
+  if (camZ > camZ_max) { camZ = camZ_max; }
+  if (camZ < 0.1) { camZ = 0.1;}
+
   camera = new THREE.PerspectiveCamera( 60, width / height, 1, 10000 );
-  camera.position.z = 500;
+  camera.position.z = camZ;
   camera.lookAt( scene.position );
   scene.add( camera );
 
-  renderer = new THREE.CanvasRenderer();
+  renderer = new THREE.WebGLRenderer({antialias: true});
   renderer.setSize( width, height );
 
   container[0].appendChild( renderer.domElement );
 
-  if(textureSampleCtx) {
-    animate();
-  }
+  setInterval(render, 300);
+
 }
 
 function animate()
