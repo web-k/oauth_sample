@@ -113,7 +113,7 @@ body {
 .landscape .css3_3d_transform.touch .menu,
 .landscape .menu.css_touch {
     position: absolute;
-    width: 195px;
+    width: 100px;
 }
 
 .landscape .css3_3d_transform.touch .menu {

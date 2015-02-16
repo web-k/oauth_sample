@@ -51,6 +51,7 @@ function init()
   $controller.on("vmousemove", moveDrag);
   $controller.on("vmouseup", endDrag);
   $controller.on("vmouseout", endDrag);
+  $controller.on("tap", onTap);
 
   //var $document = $(document);
   //$document.on("mousewheel", moveWheel);
@@ -209,4 +210,9 @@ function doRotate(lastX, lastY, curX, curY, wheelDelta)
   camera.position.z = camZ;
 
   render();
+}
+
+function onTap()
+{
+  animate();
 }
