@@ -103,7 +103,11 @@ function init_panorama()
 
   scene = new THREE.Scene();
 
-  tex = new THREE.ImageUtils.loadTexture($("#texture").attr("src"));
+  if (textureSampleCtx) {
+    tex = new THREE.Texture(textureSample[0]);
+  } else {
+    tex = new THREE.ImageUtils.loadTexture($("#texture").attr("src"));
+  }
   tex.minFilter = THREE.LinearFilter;
   tex.magFilter = THREE.LinearFilter;
 
@@ -130,6 +134,10 @@ function init_panorama()
 
   container[0].appendChild( renderer.domElement );
 
+  if (textureSampleCtx) {
+    animate();
+  }
+
   setInterval(render, 300);
 
 }
@@ -137,6 +145,7 @@ function init_panorama()
 function animate()
 {
   requestAnimationFrame( animate );
+  textureSource[0].play();
   textureSampleCtx.drawImage(textureSource[0], 0,0);
   tex.needsUpdate = true;
   render();

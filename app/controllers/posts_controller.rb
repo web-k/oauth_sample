@@ -37,6 +37,8 @@ class PostsController < ApplicationController
       'flash'
     when 'webgl'
       'webgl'
+    when 'webgl_video'
+      'webgl_video'
     else
       ios? ? 'css_touch' : 'flash'
     end

@@ -12,11 +12,11 @@
   <%= javascript_include_tag "jquery.mobile-1.1.1.min" %>
   <%= javascript_include_tag "css_3d_touch" %>
 <%
-  when 'webgl' %>
+  when 'webgl','webgl_video' %>
   <%= javascript_include_tag "jquery.mobile.config" %>
   <%= stylesheet_link_tag    "jquery.mobile-1.1.1.min" %>
   <%= javascript_include_tag "jquery.mobile-1.1.1.min" %>
-  <%= javascript_include_tag "Three" %>
+  <%= javascript_include_tag "//cdnjs.cloudflare.com/ajax/libs/three.js/r70/three.min.js" %>
   <%= javascript_include_tag "webgl_3d" %>
 <%
   when 'flash' %>
@@ -53,14 +53,18 @@ end %>
 <%= render partial: 'show_flash' %>
 </div>
 <%
-  when 'css', 'css_touch', 'webgl'
+  when 'css', 'css_touch', 'webgl', 'webgl_video'
 %>
 <div class="css3_3d_transform <%= @view=='css' ? 'mouse' : 'touch' %>">
   <div class="body">
-  <% if @view == 'webgl' %>
+  <% if @view == 'webgl' or @view == 'webgl_video' %>
     <div id="container" class="container"></div>
     <canvas id="textureSample"></canvas>
-    <img id="texture" src="/views/forest.jpg" />
+    <% if @view == 'webgl_video' %>
+    <video id="texture" src="/views/video.mp4"></video>
+    <% else %>
+    <img id="texture" src="/views/forest.jpg"></img>
+    <% end %>
   <% else %>
     <div id="container">
       <div id="cube">
